@@ -1,7 +1,16 @@
 import dotenv from "dotenv";
 import { connectDB } from "./db/index.js";
+import app from "./app.js";
 
-// Load environment variables from a .env file at the project root
 dotenv.config();
 
-connectDB();
+connectDB()
+.then(() => {
+    console.log("Database connection established successfully.");
+    app.listen(process.env.PORT || 3000, () => {
+        console.log(`Server is running on port ${process.env.PORT || 3000}`);
+    });
+}).catch((error) => {
+    console.error("Failed to connect to the database:", error);
+    process.exit(1);
+})
